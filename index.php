@@ -49,7 +49,7 @@ if(isset($_SESSION['banco']) && !empty($_SESSION['banco'])){
 			<th>Valor</th>
 		</tr>
 		<?php
-		$sql = $pdo->prepare("SELECT * FROM historico WHERE id_conta = :id_conta");
+		$sql = $pdo->prepare("SELECT * FROM historico WHERE id_conta = :id_conta ORDER BY data_operacao DESC ");
 		$sql->bindValue(":id_conta", $id);
 		$sql->execute();
 
