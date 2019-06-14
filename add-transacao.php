@@ -7,14 +7,16 @@ if(isset($_POST['tipo'])) {
 	$valor = str_replace(",", ".", $_POST['valor']);
 	$valor = floatval($valor);
 
-	$sql = $pdo->prepare("INSERT INTO historico (id_conta, tipo, valor, data_operacao) VALUES (:id_conta, :tipo, :valor, NOW())");
-	$sql->bindValue(":id_conta", $_SESSION['banco']);
-	$sql->bindValue(":tipo", $tipo);
-	$sql->bindValue(":valor", $valor);
-	$sql->execute();
+
 
 	if ($tipo == '0') {
 		// Depósito
+		$sql = $pdo->prepare("INSERT INTO historico (id_conta, tipo, valor, data_operacao) VALUES (:id_conta, :tipo, :valor, NOW())");
+		$sql->bindValue(":id_conta", $_SESSION['banco']);
+		$sql->bindValue(":tipo", $tipo);
+		$sql->bindValue(":valor", $valor);
+		$sql->execute();
+
 		$sql = $pdo->prepare("UPDATE contas SET saldo = saldo + :valor WHERE id = :id");
 		$sql->bindValue(":valor", $valor);
 		$sql->bindValue(":id", $_SESSION['banco']);
@@ -27,6 +29,12 @@ if(isset($_POST['tipo'])) {
 		$sql->execute();
 
 		if($sql->rowCount() == 1){
+			$sql = $pdo->prepare("INSERT INTO historico (id_conta, tipo, valor, data_operacao) VALUES (:id_conta, :tipo, :valor, NOW())");
+			$sql->bindValue(":id_conta", $_SESSION['banco']);
+			$sql->bindValue(":tipo", $tipo);
+			$sql->bindValue(":valor", $valor);
+			$sql->execute();
+			
 			$sql = $pdo->prepare("UPDATE contas SET saldo = saldo - :valor WHERE id = :id");
 			$sql->bindValue(":valor", $valor);
 			$sql->bindValue(":id", $_SESSION['banco']);
