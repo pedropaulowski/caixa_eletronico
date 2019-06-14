@@ -21,12 +21,17 @@ if(isset($_POST['tipo'])) {
 		$sql->execute();
 
 	} else {
-		// Saque
-		$sql = $pdo->prepare("UPDATE contas SET saldo = saldo - :valor WHERE id = :id");
-		$sql->bindValue(":valor", $valor);
+		$sql = $pdo->prepare("SELECT * FROM contas WHERE id = :id AND saldo >=:valor");
 		$sql->bindValue(":id", $_SESSION['banco']);
+		$sql->bindValue(":valor", $valor);
 		$sql->execute();
-		
+
+		if($sql->rowCount() == 1){
+			$sql = $pdo->prepare("UPDATE contas SET saldo = saldo - :valor WHERE id = :id");
+			$sql->bindValue(":valor", $valor);
+			$sql->bindValue(":id", $_SESSION['banco']);
+			$sql->execute();
+		}
 	}
 
 	header("Location: index.php");

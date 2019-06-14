@@ -12,15 +12,23 @@ if(isset($_POST['id']) && !empty($_POST['id']) && !empty($_POST['valor'])){
 	if($sql->rowCount() == 0 ){
 		echo "Não pode transferir para essa conta pois ela não existe";
 	} else {
-	$sql = $pdo->prepare("UPDATE contas SET saldo = saldo + :valor WHERE id = :id");
-	$sql->bindValue(":valor", $valor);
-	$sql->bindValue(":id", $id);
-	$sql->execute();
 
-	$sql = $pdo->prepare("UPDATE contas SET saldo = saldo - :valor WHERE id = :id");
-	$sql->bindValue(":valor", $valor);
-	$sql->bindValue(":id", $_SESSION['banco']);
-	$sql->execute();
+		$sql = $pdo->prepare("SELECT * FROM contas WHERE id = :id AND saldo >=:valor");
+		$sql->bindValue(":id", $_SESSION['banco']);
+		$sql->bindValue(":valor", $valor);
+		$sql->execute();
+
+	if($sql->rowCount() == 1){
+		$sql = $pdo->prepare("UPDATE contas SET saldo = saldo + :valor WHERE id = :id");
+		$sql->bindValue(":valor", $valor);
+		$sql->bindValue(":id", $id);
+		$sql->execute();
+
+		$sql = $pdo->prepare("UPDATE contas SET saldo = saldo - :valor WHERE id = :id");
+		$sql->bindValue(":valor", $valor);
+		$sql->bindValue(":id", $_SESSION['banco']);
+		$sql->execute();
+	}
 	
 	header("Location: index.php");
 	exit;
