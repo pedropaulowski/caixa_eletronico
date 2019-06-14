@@ -29,9 +29,9 @@ if(isset($_SESSION['banco']) && !empty($_SESSION['banco'])){
 </head>
 <body>
 	<h1>Banco GOI</h1>
-	Titular:<?php echo $info['titular'];?><br/>
-	ID:<?php echo $_SESSION['banco'];?><br/>
-	Agência:<?php echo $info['agencia'];?><br/>
+	Titular: <?php echo $info['titular'];?><br/>
+	ID: <?php echo $_SESSION['banco'];?><br/>
+	Agência: <?php echo $info['agencia'];?><br/>
 	Conta: <?php echo $info['conta'];?><br/>
 	Saldo: <?php echo $info['saldo'];?><br/>
 
