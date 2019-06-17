@@ -23,7 +23,7 @@ if(isset($_POST['tipo'])) {
 		$sql->execute();
 
 	} else {
-		$sql = $pdo->prepare("SELECT * FROM contas WHERE id = :id AND saldo >=:valor");
+		$sql = $pdo->prepare("SELECT * FROM contas WHERE id = :id AND saldo >= :valor");
 		$sql->bindValue(":id", $_SESSION['banco']);
 		$sql->bindValue(":valor", $valor);
 		$sql->execute();
